@@ -30,7 +30,7 @@
 
 
 from gensim.corpora import WikiCorpus
-import logging, os. os.path
+import logging, os
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 corpus = WikiCorpus('../itwiki-latest-pages-articles.xml.bz2',dictionary=False)
 max_sentence = -1
