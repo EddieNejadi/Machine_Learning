@@ -46,7 +46,7 @@ from gensim.models.word2vec import BrownCorpus, Word2Vec
 model = Word2Vec()
 # Check if model is not exist
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
-	model.Word2Vec.load('../model_farsi')
+	model.load('../model_farsi')
 	result = model.most_similar(positive=[u'زن', u'پادشاه'], negative=[u'مرد'])
 	print "result is:"
 	print result
