@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # import logging, gensim, bz2
 # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
@@ -44,7 +45,7 @@ def generate_lines():
 from gensim.models.word2vec import BrownCorpus, Word2Vec
 model = Word2Vec()
 # Check if model is not exist
-if ((os.path.exists('../model_farsi')) && (os.path.isfile('../model_farsi'))):
+if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	model.Word2Vec.load('../model_farsi')
 	result = model.most_similar(positive=[u'زن', u'پادشاه'], negative=[u'مرد'])
 	print "result is:"
