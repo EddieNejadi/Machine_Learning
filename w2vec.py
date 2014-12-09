@@ -48,6 +48,7 @@ model = Word2Vec()
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	model.load('../model_farsi')
 	result = model.most_similar(positive=[u'زن', u'پادشاه'], negative=[u'مرد'])
+	
 	print "result is:"
 	print result
 
