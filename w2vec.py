@@ -32,7 +32,7 @@
 from gensim.corpora import WikiCorpus
 import logging, os
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-corpus = WikiCorpus('../itwiki-latest-pages-articles.xml.bz2',dictionary=False)
+corpus = WikiCorpus('../fawiki-latest-pages-articles.xml.bz2',dictionary=False)
 max_sentence = -1
 
 def generate_lines():
@@ -42,15 +42,18 @@ def generate_lines():
         else:
             break
 
-from gensim.models.word2vec import BrownCorpus, Word2Vec
+from gensim.models.word2vec import Word2Vec
 model = Word2Vec()
 # Check if model is not exist
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	model.load('../model_farsi')
-	result = model.most_similar(positive=[u'زن', u'پادشاه'], negative=[u'مرد'])
+	result = model.most_similar('book')
 	
 	print "result is:"
 	print result
+
+elif (os.path.isfile('../'))):
+	model = Word2Vec.load_word2vec_format('/tmp/vectors.bin', binary=True)
 
 else:
 	model.build_vocab(generate_lines())
