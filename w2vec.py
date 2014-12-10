@@ -47,7 +47,7 @@ model = Word2Vec()
 # Check if model is not exist
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	model.load('../model_farsi')
-	result = model.most_similar('book')
+	result = model.most_similar(u'سگ')
 	
 	print "result is:"
 	print result
