@@ -53,7 +53,7 @@ if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))) a
 	print result
 
 elif (os.path.isfile('../GoogleNews-vectors-negative300.bin.gz')):
-	model = Word2Vec.load_word2vec_format('./GoogleNews-vectors-negative300.bin.gz', binary=True)
+	model = Word2Vec.load_word2vec_format('../GoogleNews-vectors-negative300.bin.gz', binary=True)
 	result = model.most_similar(u'dog')
 	
 	print "result is:"
