@@ -52,10 +52,15 @@ if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	print "result is:"
 	print result
 
-elif (os.path.isfile('../'))):
-	model = Word2Vec.load_word2vec_format('/tmp/vectors.bin', binary=True)
+elif (os.path.isfile('../GoogleNews-vectors-negative300.bin.gz')):
+	model = Word2Vec.load_word2vec_format('./GoogleNews-vectors-negative300.bin.gz', binary=True)
+	result = model.most_similar(u'dog')
+	
+	print "result is:"
+	print result
 
 else:
-	model.build_vocab(generate_lines())
-	model.train(generate_lines(),chunksize=500)
-	model.save(model_farsi)
+	# model.build_vocab(generate_lines())
+	# model.train(generate_lines(),chunksize=500)
+	# model.save(model_farsi)
+	print " Error: no trained file..."
