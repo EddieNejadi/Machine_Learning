@@ -28,6 +28,11 @@
 # model.save('model_farsi')
 # model = Word2Vec.load(fname)  # you can continue training with the loaded model!
 
+# import logging
+# logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+# from gensim.models.word2vec import Word2Vec
+# model = Word2Vec()
+# model = Word2Vec.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 
 from gensim.corpora import WikiCorpus
 import logging, os
@@ -54,6 +59,13 @@ if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))) a
 
 elif (os.path.isfile('../GoogleNews-vectors-negative300.bin.gz')):
 	model = Word2Vec.load_word2vec_format('../GoogleNews-vectors-negative300.bin.gz', binary=True)
+	result = model.most_similar(u'dog')
+	
+	print "result is:"
+	print result
+
+elif (os.path.isfile('../GoogleNews-vectors-negative300.bin')):
+	model = Word2Vec.load_word2vec_format('../GoogleNews-vectors-negative300.bin', binary=True)
 	result = model.most_similar(u'dog')
 	
 	print "result is:"
