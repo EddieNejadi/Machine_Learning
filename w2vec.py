@@ -45,7 +45,7 @@ def generate_lines():
 from gensim.models.word2vec import Word2Vec
 model = Word2Vec()
 # Check if model is not exist
-if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
+if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))) and False:
 	model.load('../model_farsi')
 	result = model.most_similar(u'سگ')
 	
