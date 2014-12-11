@@ -23,7 +23,7 @@ if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	print "result is:"
 	print result
 
-elif:
+else:
 	corpus = WikiCorpus('../fawiki-latest-pages-articles.xml',dictionary=False)
 	model = Word2Vec() 
 	model.build_vocab(generate_lines()) #This strangely builds a vocab of "only" 747904 words which is << than those reported in the literature 10M words
