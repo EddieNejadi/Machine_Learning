@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
+
 
 
 from gensim.corpora import WikiCorpus
@@ -21,7 +21,7 @@ def generate_lines():
 model = Word2Vec() 		
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	model = Word2Vec.load('../model_farsi')
-	result = model.most_similar('روز')
+	result = model.most_similar(u'روز')
 	
 	print "result is:"
 	print result
