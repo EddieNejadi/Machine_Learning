@@ -72,10 +72,39 @@ class SequenceVectorizer(object):
         Ye = [ [(self.tag_to_id[t] if t in self.tag_to_id else -1) for t in y] for y in Y ]
         return Xe, Ye
 
+    def transform_greedy(self, X, Y):
+        all_steps_features = []
+        print("Extracting features greedy...")
+        for x in X:
+            ntokens = len(x)
+            for i in range(ntokens):
+                for tag in self.tags:
+                    all_steps_features.append(self.fe.extract_emission_features(x, i, "?"))
+            for tag in self.tags:
+                all_steps_features.append(self.fe.extract_transition_features(x, i, BEFORE_TAG, "?"))
+            for i in range(1, ntokens):
+                for prev_tag, tag in itertools.product(self.tags, self.tags):
+                    all_steps_features.append(self.fe.extract_transition_features(x, i, BEFORE_TAG, "?"))
+            for tag in self.tags:
+                all_steps_features.append(self.fe.extract_transition_features(x, i, tag, AFTER_TAG))              
+        print("Transforming features...")                
+        all_steps_vectors = self.dv.transform(all_steps_features)
+        print("Grouping features...")
+        ntags = len(self.tags)
+        lengths = ( len(x)*ntags + (len(x)-1)*ntags*ntags + 2*ntags for x in X)
+        Xe = [ all_steps_vectors[i:j] for (i,j) in self.starts_ends(lengths) ]
+        Ye = [ [(self.tag_to_id[t] if t in self.tag_to_id else -1) for t in y] for y in Y ]
+        return Xe, Ye
+
     def fit_transform(self, X, Y):
         """Equivalent to calling fit and then transform."""
         self.fit(X, Y)
         return self.transform(X, Y)
+
+    def fit_transform_greedy(self, X, Y):
+        """Equivalent to calling fit and then transform."""
+        self.fit(X, Y)
+        return self.transform_greedy(X, Y)
 
     def number_of_features(self):
         """Return the number of features used by this vectorizer."""
@@ -180,7 +209,7 @@ class SequenceFeatureExtractor(object):
 
     def __init__(self):
         pass
-    
+    # x, i, y 
     def extract_greedy_features(self, x, position, prev_tag):
         features = self.extract_emission_features(x, position, "?")
         features.update(self.extract_transition_features(x, position, prev_tag, "?"))
@@ -339,10 +368,10 @@ class StructuredPerceptron():
 
 if __name__ == '__main__':
     # Reading from the file
-    X, Y = conll.read_sentences('./resources/eng.train.iob', 100)
-    X_test, Y_test = conll.read_sentences('./resources/eng.test.iob', 50)
+    X, Y = conll.read_sentences('./resources/eng.train.iob',200)
+    X_test, Y_test = conll.read_sentences('./resources/eng.test.iob',50)
 
-
+    # print X[1]
     vec = SequenceVectorizer()
     X_train,Y_train = vec.fit_transform(X, Y)
     n_features = vec.number_of_features()
@@ -359,5 +388,3 @@ if __name__ == '__main__':
             count += 1
     print (1 - (error_counter / count)) * 100
     problem.print_info()
-
-

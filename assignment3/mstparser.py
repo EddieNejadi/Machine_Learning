@@ -10,9 +10,10 @@ This module also includes a function to read NLTK's dependency treebank.
 
 from sklearn.feature_extraction import DictVectorizer
 from nltk.corpus import dependency_treebank
-import math
-import itertools
-import numpy
+import math, itertools, numpy
+from sklearn.pipeline import Pipeline
+import sequence_tagger, conll_format
+from sklearn.linear_model import Perceptron
 
 def read_dependency_treebank():
     """Read the dependency treebank included in NLTK, and convert it to a
@@ -372,12 +373,34 @@ def runStructuredPerceptron():
     print (1 - (error_counter / count)) * 100
     problem.print_info()
 
-def extract_greedy_features():
-    pass
+def train_classifier(X, Y, classifier):
+    vec = DictVectorizer()
+    Xe = vec.fit_transform(X) # sparse matrix
+    classifier.fit(Xe, Y)
+    return Pipeline([('vec', vec), ('cls', classifier)])
+
+def runExtractGreedyFeatures():
+    X, Y = conll_format.read_sentences('./resources/eng.train.iob',200)
+    X_test, Y_test = conll_format.read_sentences('./resources/eng.test.iob',50)
+
+    # print X[1]
+    vec = sequence_tagger.SequenceVectorizer()
+    X_train,Y_train = vec.fit_transform(X, Y)
+    n_features = vec.number_of_features()
+    problem =  sequence_tagger.SequenceTaggingDefinition(vec)
+    sp = Perceptron(10)
+    sp.fit(X_train, Y_train)
+    Y_g = sp.predict(vec.transform(X_test, [])[0])
+    error_counter = 0
+    count = 0.0
+    for ygs, ys in zip(Y_g, Y_test): 
+        for yg, y in zip(vec.to_tags(ygs), ys):
+            if y != yg:
+                error_counter += 1
+            count += 1
+    print (1 - (error_counter / count)) * 100
+    problem.print_info()
 
 if __name__ == '__main__':
-    runStructuredPerceptron()
-         
-
-
-
+    # runStructuredPerceptron()
+    runExtractGreedyFeatures()
