@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 
 
@@ -21,10 +22,16 @@ def generate_lines():
 model = Word2Vec() 		
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
 	model = Word2Vec.load('../model_farsi')
-	result = model.most_similar(u'روز')
+	result_1 = model.most_similar('روز')
+	result_2 = model.most_similar(positive=['زن', 'پادشاه'], negative=['مرد'], topn=10)§
 	
 	print "result is:"
-	print result
+	for (re,v) in result_1:
+		print re + ' '+ str(v)
+	print "======================="
+	for (re,v) in result_2:
+		print re + ' '+ str(v)
+
 
 else:
 	model.build_vocab(corpus.get_texts()) 

@@ -350,9 +350,7 @@ class StructuredPerceptron():
     def predict(self, X):
         return self.problem.predict(self.w, X)
 
-
-if __name__ == '__main__':
-    
+def runStructuredPerceptron():
     X,Y = read_dependency_treebank()
     traning_size = len(X) * 8 / 10  
     X_train, Y_train = X[:traning_size], Y[:traning_size]
@@ -371,5 +369,15 @@ if __name__ == '__main__':
             if y != yg:
                 error_counter += 1
             count += 1
-    print (1 - (error_counter / count)) * 100 
+    print (1 - (error_counter / count)) * 100
+    problem.print_info()
+
+def extract_greedy_features():
+    pass
+
+if __name__ == '__main__':
+    runStructuredPerceptron()
+         
+
+
 
