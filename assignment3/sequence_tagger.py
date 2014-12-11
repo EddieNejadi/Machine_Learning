@@ -358,5 +358,6 @@ if __name__ == '__main__':
                 error_counter += 1
             count += 1
     print (1 - (error_counter / count)) * 100
+    problem.print_info()
 
 
