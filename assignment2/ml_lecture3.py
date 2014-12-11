@@ -158,29 +158,55 @@ class Pegasos_SVM(LinearClassifier):
         self.find_classes(Y)
             
         n_features = X.shape[1]
-        X = X.toarray()
-        Y = list(Y)
-        self.w = numpy.zeros( n_features )
+        n_instances = X.shape[0]
+
+        
+        # self.training_t *= n_instances
+        self.w = numpy.zeros( n_features ) # Dense w
         Yn = [sign(y, self.positive_class) for y in Y]
-        self.training_t *= X.shape[0]
-        numpy_vec = numpy.array(self.w)
-        a = 1.0
-        v = a * numpy.linalg.norm(numpy_vec)
+        # numpy_vec = numpy.array(self.w)
+        # a = 1.0
+        # vec = a * numpy.linalg.norm(numpy_vec)
+       
+        print (type(X))
+        X = list(X) # Sparse X
+        # X = X.toarray()
+        print (type(X))
+        print (len(X), len(Yn))
+
         z = zip (X, Yn)
+        print (len(z))
+        print (n_features, n_instances)
         my_counter = 0
         for t in range(self.training_t):
-            (x, y) = z[t % X.shape[0]]
-            eta_t_y = (1 / self.lam * (t+1)) * y
-            c = (1 - ( 1 / (t+1) ))
-            xw = self.w.dot(x)
-            if t % 10000 == 0: print (xw)
-            score = xw * y
-            if score < 1 :
-                self.w = (a * c) * self.w + (eta_t_y * x)
-                a = 1.0
-            else:
-                a *= c
-        if a != 1.0 : self.w *= a
+            print (t)
+            # loop over the whole training set of z maybe randomly chose i in range n_instances
+            for i in range(n_instances):
+                # (x, y) = z[t % n_instances]
+                (x, y) = z[i]
+                print(x)
+                print("====================")
+                # print(self.w)
+                # eta_t_y = ((1 / self.lam) * (t+1)) * y
+                eta_t = (1 / (self.lam * (t+1)))
+                c = (1 - ( 1 / (t+1) ))
+                # xw = self.w.dot(x)
+                xw = sparse_dense_dot(x, self.w)
+                if t % 10000 == 0: print (xw)
+                score = xw * y
+                if score < 1 :
+                    # self.w = (a * c) * self.w + (eta_t_y * x)
+                    # self.w =  (c * self.w) + ((eta_t*y) * x)
+                    self.w =  add_sparse_to_dense( list((eta_t*y) * x) , (c * self.w), xw)
+                    print ("in if")
+                    print(type((eta_t*y) * x))
+                    # a = 1.0
+                else:
+                    self.w =  c * self.w
+                    print ("in else")
+                    print(self.w)
+                    # a *= c
+            # if a != 1.0 : self.w *= a
 
 
 class Logistic_regression(LinearClassifier):

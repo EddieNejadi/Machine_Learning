@@ -38,15 +38,17 @@ def assignment2_experiment():
         
     # using one of the perceptron implementations from the lecture
     # classifier = train_classifier(X_train, Y_train, 
-                                  # ml_lecture3.SparsePerceptron(n_iter=5))
+    #                               ml_lecture3.SparsePerceptron(n_iter=5))
+    # classifier = train_classifier(X_train, Y_train, 
+    #                               ml_lecture3.DensePerceptron(n_iter=5))
 
     # using classifiers from scikit-learn
     # classifier = train_classifier(X_train, Y_train, Perceptron(n_iter=5))
     # classifier = train_classifier(X_train, Y_train, LinearSVC())
-    # classifier = train_classifier(
-    #     X_train, Y_train, ml_lecture3.Pegasos_SVM(0.01,10))
     classifier = train_classifier(
-        X_train, Y_train, ml_lecture3.Logistic_regression(0.01,10))
+        X_train, Y_train, ml_lecture3.Pegasos_SVM(0.01,10))
+    # classifier = train_classifier(
+    #     X_train, Y_train, ml_lecture3.Logistic_regression(0.01,10))
 
     t2 = time.time()
 
@@ -61,9 +63,6 @@ def assignment2_experiment():
 
     acc = accuracy_score(Y_test, Y_guesses)
     print('Accuracy on the test set: {0:.3f}'.format(acc))
-
-
-
 
 
 if __name__ == '__main__':
