@@ -20,7 +20,7 @@ def generate_lines():
 # Check if model is not exist
 model = Word2Vec() 		
 if ((os.path.exists('../model_farsi')) and (os.path.isfile('../model_farsi'))):
-	model.Word2Vec.load('../model_farsi')
+	model = Word2Vec.load('../model_farsi')
 	result = model.most_similar(u'زن')
 	
 	print "result is:"
