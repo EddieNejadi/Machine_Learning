@@ -388,9 +388,11 @@ def runExtractGreedyFeatures():
     X_train,Y_train = vec.fit_transform(X, Y)
     n_features = vec.number_of_features()
     problem =  sequence_tagger.SequenceTaggingDefinition(vec)
-    sp = Perceptron(10)
+    sp = StructuredPerceptron(n_features, problem, 10)
+    print len(X_train)
+    print len(Y_train)
     sp.fit(X_train, Y_train)
-    Y_g = sp.predict(vec.transform(X_test, [])[0])
+    Y_g = sp.predict_gready(vec.transform(X_test, [])[0])
     error_counter = 0
     count = 0.0
     for ygs, ys in zip(Y_g, Y_test): 

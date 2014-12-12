@@ -23,7 +23,7 @@ class SequenceVectorizer(object):
     def __init__(self):
         pass
 
-    def fit(self, X, Y):
+    def fit(self, X, Y, greedy=False):
         """Create the mapping from tagged sentence features to vector space 
         dimensions."""
         self.find_tags(Y)        
@@ -33,8 +33,11 @@ class SequenceVectorizer(object):
         for x, y in zip(X, Y):
             prev_tag = BEFORE_TAG
             for i in range(len(y)):
-                all_steps_features.append(self.fe.extract_emission_features(x, i, y[i]))
-                all_steps_features.append(self.fe.extract_transition_features(x, i, prev_tag, y[i]))
+                if greedy:
+                    all_steps_features.append(self.fe.extract_greedy_features(x, i, prev_tag, y[i]))
+                else:
+                    all_steps_features.append(self.fe.extract_emission_features(x, i, y[i]))
+                    all_steps_features.append(self.fe.extract_transition_features(x, i, prev_tag, y[i]))
                 prev_tag = y[i]
             all_steps_features.append(self.fe.extract_transition_features(x, len(y), prev_tag, AFTER_TAG))
         self.dv.fit(all_steps_features)        
