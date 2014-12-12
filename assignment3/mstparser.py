@@ -379,7 +379,8 @@ def train_classifier(X, Y, classifier):
     classifier.fit(Xe, Y)
     return Pipeline([('vec', vec), ('cls', classifier)])
 
-def runExtractGreedyFeatures():
+# THis function is not complete
+def runExtractGreedyFeatures():  
     X, Y = conll_format.read_sentences('./resources/eng.train.iob',200)
     X_test, Y_test = conll_format.read_sentences('./resources/eng.test.iob',50)
 
@@ -404,5 +405,5 @@ def runExtractGreedyFeatures():
     problem.print_info()
 
 if __name__ == '__main__':
-    # runStructuredPerceptron()
-    runExtractGreedyFeatures()
+    runStructuredPerceptron()
+    # runExtractGreedyFeatures()
