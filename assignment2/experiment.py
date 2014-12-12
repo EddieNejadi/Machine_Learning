@@ -43,12 +43,13 @@ def assignment2_experiment():
     #                               ml_lecture3.DensePerceptron(n_iter=5))
 
     # using classifiers from scikit-learn
-    # classifier = train_classifier(X_train, Y_train, Perceptron(n_iter=5))
+    # classifier = train_classifier(X_train[:5000], Y_train[:5000], Perceptron(n_iter=5))
     # classifier = train_classifier(X_train, Y_train, LinearSVC())
+
     classifier = train_classifier(
-        X_train[:500], Y_train[:500], ml_lecture3.Pegasos_SVM(0.01,10))
+        X_train[:2000], Y_train[:2000], ml_lecture3.Pegasos_SVM(0.01,10))
     # classifier = train_classifier(
-    #     X_train, Y_train, ml_lecture3.Logistic_regression(0.01,10))
+    #     X_train[:1000], Y_train[:1000], ml_lecture3.Logistic_regression(0.01,10))
 
     t2 = time.time()
 
@@ -56,12 +57,12 @@ def assignment2_experiment():
 
     t2c = time.time()
 
-    Y_guesses = classifier.predict(X_test[:50])
+    Y_guesses = classifier.predict(X_test)
 
     t2d = time.time()
     print('Classification time: {0:.3f} sec.'.format(t2d-t2c))
 
-    acc = accuracy_score(Y_test[:50], Y_guesses)
+    acc = accuracy_score(Y_test, Y_guesses)
     print('Accuracy on the test set: {0:.3f}'.format(acc))
 
 
